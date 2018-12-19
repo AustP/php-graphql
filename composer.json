@@ -1,0 +1,16 @@
+{
+  "autoload": {
+    "psr-4": {
+      "GraphQL\\": "src",
+      "GraphQL\\Features\\": "features"
+    }
+  },
+  "description": "Because building a PHP GraphQL server should be easy.",
+  "name": "austp/php-graphql",
+  "require-dev": {
+    "austp/peridot-gherkin-plugin": "^1.0",
+    "mockery/mockery": "^1.2",
+    "peridot-php/peridot": "^1.19",
+    "webmozart/assert": "^1.3"
+  }
+}

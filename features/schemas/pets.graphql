@@ -1,0 +1,89 @@
+type Query {
+    dog: Dog
+}
+
+type Mutation {
+    mutateDog: Dog
+}
+
+type Subscription {
+    disallowedSecondRootField: Boolean
+    newMessage: Message
+}
+
+type Message {
+    body: String!
+    sender: String!
+}
+
+enum DogCommand { SIT, DOWN, HEEL }
+
+type Dog implements Pet {
+    name: String!
+    nickname: String
+    barkVolume: Int
+    doesKnowCommand(dogCommand: DogCommand!): Boolean!
+    isHousetrained(atOtherHomes: Boolean): Boolean!
+    owner: Human
+}
+
+interface Sentient {
+    name: String!
+}
+
+interface Pet {
+    name: String!
+}
+
+type Alien implements Sentient {
+    name: String!
+    homePlanet: String
+}
+
+type Human implements Sentient {
+    name: String!
+}
+
+enum CatCommand { JUMP }
+
+type Cat implements Pet {
+    name: String!
+    nickname: String
+    doesKnowCommand(catCommand: CatCommand!): Boolean!
+    meowVolume: Int
+}
+
+union CatOrDog = Cat | Dog
+union DogOrHuman = Dog | Human
+union HumanOrAlien = Human | Alien
+
+extend type Query {
+    human: Human
+    pet: Pet
+    catOrDog: CatOrDog
+}
+
+type Arguments {
+    multipleReqs(x: Int!, y: Int!): Int!
+    booleanArgField(booleanArg: Boolean): Boolean
+    floatArgField(floatArg: Float): Float
+    intArgField(intArg: Int): Int
+    nonNullBooleanArgField(nonNullBooleanArg: Boolean!): Boolean!
+    booleanListArgField(booleanListArg: [Boolean]!): [Boolean]
+    optionalNonNullBooleanArgField(optionalBooleanArg: Boolean! = false): Boolean!
+}
+
+extend type Query {
+    arguments: Arguments
+}
+
+extend type Human {
+    pets: [Pet]!
+}
+
+input ComplexInput { name: String, owner: String }
+
+extend type Query {
+  findDog(complex: ComplexInput): Dog
+  booleanList(booleanListArg: [Boolean!]): Boolean
+}

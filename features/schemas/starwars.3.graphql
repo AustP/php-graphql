@@ -1,0 +1,25 @@
+# Represents a review for a movie
+type Review {
+    # The movie
+    episode: Episode
+    # The number of stars this review gave, 1-5
+    stars: Int!
+    # Comment about the movie
+    commentary: String
+}
+# The input object sent when someone is creating a new review
+input ReviewInput {
+    # 0-5 stars
+    stars: Int!
+    # Comment about the movie, optional
+    commentary: String
+}
+type Starship {
+    # The ID of the starship
+    id: ID!
+    # The name of the starship
+    name: String!
+    # Length of the starship, along the longest axis
+    length(unit: LengthUnit = METER): Float
+}
+union SearchResult = Human | Droid | Starship
