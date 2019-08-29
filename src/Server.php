@@ -66,13 +66,20 @@ class Server
 
         $selectionSet = $operation['selectionSet'];
 
-        // $this->executeResolver comes from ResolverTrait
-        $data = $this->executeResolver(
-            $this->schema,
-            $this->document,
-            $variables,
-            $selectionSet
-        );
+        try {
+            // $this->executeResolver comes from ResolverTrait
+            $data = $this->executeResolver(
+                $this->schema,
+                $this->document,
+                $variables,
+                $selectionSet
+            );
+        } catch (ServerError $exception) {
+            $error = $this->getError($exception);
+            return [
+                'errors' => [$error]
+            ];
+        }
 
         $response = ['data' => $data];
 
