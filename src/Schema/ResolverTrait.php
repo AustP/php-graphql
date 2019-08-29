@@ -488,31 +488,26 @@ trait ResolverTrait
         }
 
         if (is_array($fieldType['value'])) {
-            if (!is_array($result)) {
+            if (!is_iterable($result)) {
                 $this->addResolverError("`$fieldName` must be a list.");
                 return $result;
             }
 
             $innerType = $fieldType['value'];
-            return array_map(
-                function ($resultItem) use (
+
+            $completedResult = [];
+            foreach ($result as $resultItem) {
+                $completedResult[] = $this->resolverCompleteValue(
                     $schema,
                     $document,
                     $innerType,
                     $fields,
+                    $resultItem,
                     $variables
-                ) {
-                    return $this->resolverCompleteValue(
-                        $schema,
-                        $document,
-                        $innerType,
-                        $fields,
-                        $resultItem,
-                        $variables
-                    );
-                },
-                $result
-            );
+                );
+            }
+
+            return $completedResult;
         }
 
         $object = $schema[$fieldType['value']] ?? null;
