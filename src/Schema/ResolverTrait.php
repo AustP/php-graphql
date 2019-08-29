@@ -244,7 +244,9 @@ trait ResolverTrait
 
         if (Server::$useResultCoercion === false) {
             $valueType = $object['name'] ?? Parser::getInputType($value, null);
-            if ($type !== $valueType) {
+            if ($type !== $valueType &&
+                !($type === 'ID' && $valueType === 'String')
+            ) {
                 Server::throwError(
                     "Expected `$fieldName` to return `$type`, but it " .
                     "returned `$valueType` instead."
